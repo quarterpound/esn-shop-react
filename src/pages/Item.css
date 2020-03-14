@@ -1,0 +1,101 @@
+.itemInner {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+}
+
+.itemDetails {
+    display: grid;
+    width: 80%;
+    margin: 0 auto;
+    padding: 30px;
+}
+
+.itemCategory {
+    margin: 0;
+    text-transform: uppercase;
+    font-size: 11pt;
+}
+
+.itemName {
+    text-transform: uppercase;
+    font-weight: 300;
+}
+
+.itemPriceAndQty {
+    display: grid;
+    padding: 50px 0;
+    font-size: 12pt;
+    grid-template-columns: 1fr 1fr;
+}
+
+.itemPrice {
+    margin: 0;
+    margin-top: 10px;
+    font-size: 22pt;
+}
+
+.tabTitle {
+    margin: 0;
+}
+
+.quantityContainer {
+    width: 60%;
+    margin-top: 10px;
+    border: 1px solid transparent;
+    border-radius: 20px;
+}
+
+.quantityContainerInner {
+    display: grid;
+    background-color: rgb(241, 241, 241);
+    border-radius: 20px;
+    padding: 5px 9px;
+    grid-template-columns: 25px 1fr 25px;
+}
+
+.button-spec {
+    border-radius: 20px;
+    border: 1px solid transparent;
+}
+
+.tabSwitchBar {
+    display: grid;
+    height: 50px;
+    grid-template-columns: 1fr 1fr;
+    grid-gap: 20px;
+    justify-items: center;
+    align-items: center;
+}
+
+.tabSwitchBar > button {
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    border: none;
+    border-bottom: 3px solid rgb(184, 184, 184);
+}
+
+.selected {
+    border-bottom: 3px solid rgb(114, 114, 114) !important;
+}
+
+.total-price {
+    margin: 0;
+    font-size: 20pt;
+    font-weight: 300;
+}
+
+.pricing {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+}
+
+.add-to-cart {
+    border: none;
+    background: blue;
+    color: white;
+    width: 100%;
+    height: 50px;
+    border-radius: 50px;
+}
