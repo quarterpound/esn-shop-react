@@ -82,7 +82,7 @@ class Item extends React.Component {
                         <div className="pricing" style={{alignSelf: "end"}}>
                             <div>
                                 <span style={{fontSize: '11pt'}}>TOTAL PRICE</span>
-                                <p className="total-price">₼{this.state.itmPrice * this.state.itemQty}</p>
+                                <p className="total-price">₼{(this.state.itmPrice * this.state.itemQty).toFixed(2)}</p>
                             </div>
                             <div>
                                 <button className="add-to-cart">Add to Cart</button>
