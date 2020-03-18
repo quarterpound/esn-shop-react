@@ -1,0 +1,25 @@
+.sliderContainer {
+    display: grid;
+    height: 100%;
+    grid-template-rows: auto 60px;
+    justify-items: center;
+    align-items: center;
+}
+
+.arrows {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+}
+
+.disabled-slide {
+    visibility: hidden;
+}
+
+.itemImage {
+    width: 100%;
+    background-position: center;
+    background-size: cover;
+    height: 100%;
+    border-radius: 5px;
+}

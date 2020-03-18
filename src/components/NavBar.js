@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import Icon from './Icon';
 import cart from "../assets/supermarket.svg";
-import esn from "../assets/esn.png";
+import esn from "../assets/AZ_colour.png";
 import './NavBar.css';
 
 
@@ -12,8 +12,8 @@ class NavBar extends React.Component {
             <div className="navBarOuter">
                 <div className="navBarInner">
                     <div className="logoArea">
-                        <Link to="/"><img src={esn} style={{width: "50px"}}/></Link>
-                        <span className="logoText"><Link to="/">ESN Azerbaijan</Link></span>
+                        <Link to="/"><img alt="ESN Star" src={esn} style={{width: "180px"}}/></Link>
+                        {/* <span className="logoText"><Link to="/">ESN Azerbaijan</Link></span> */}
                     </div>
                     <div style={{justifySelf: "right"}}>
                         <ul className="navBarLinks">

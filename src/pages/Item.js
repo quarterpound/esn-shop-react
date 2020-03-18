@@ -1,7 +1,11 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
+import qrcode from 'qrcode';
 import Icon from '../components/Icon';
+import loading from '../assets/loading.gif';
+import Slider from '../components/Slider';
 import sampleImage from '../assets/bag.jpg'
+import sampleImage1 from '../assets/img5.jpg'
 import plus from '../assets/plus.svg';
 import minus from '../assets/minus.svg';
 import "./Item.css"
@@ -11,11 +15,19 @@ class Item extends React.Component {
         selectedTab: 0,
         itemQty: 1,
         itmPrice: 345.00,
+        currentSlide: 0,
     }
 
-    handleTabSwitch(e) {
-        e.preventDefault();
-        this.setState({selectedTab: parseInt(e.target.getAttribute("data-tab-index"))})
+    images = [
+        sampleImage,
+        sampleImage1,
+    ]
+
+    async componentDidMount() {
+        const qr = await qrcode.toDataURL(window.location.href, {margin: 0})
+        this.setState({
+            qrCode: qr
+        })
     }
 
     handleQtyChange(e) {
@@ -29,20 +41,36 @@ class Item extends React.Component {
                 if(this.state.itemQty < 10)
                     this.setState({itemQty: this.state.itemQty + 1})
                 break;
+            default:
+                return;
         }
     }
+    
+    handleTabSwitch(e) {
+        e.preventDefault();
+        this.setState({selectedTab: parseInt(e.target.getAttribute("data-tab-index"))})
+    }
 
-    render() {
+
+    render = () => {
+        console.log(this.images);
         return (
             <div className="itemOuter">
                 <div className="itemInner">
                     <div>
-                        <img style={{width: "90%"}} src={sampleImage} />
+                        <Slider images={this.images} />
                     </div>
                     <div className="itemDetails">
                         <div>
-                            <p className="itemCategory">Category</p>
-                            <h1 className="itemName">Item Name</h1>
+                            <div className="qrCode">
+                                <div>
+                                    <p className="itemCategory">Category</p>
+                                    <h1 className="itemName">Item Name</h1>
+                                </div>
+                                <div className="qrCodeContainer">
+                                    <img className="qrCodeImage" src={ this.state.qrCode || loading} alt="QR Code" />
+                                </div>
+                            </div>
                             <div className="itemPriceAndQty">
                                 <div>
                                     <p className="tabTitle">PRICE</p>
@@ -72,6 +100,8 @@ class Item extends React.Component {
                                                 return (<Tab0 />)
                                             case 1:
                                                 return (<Tab1 />)
+                                            default:
+                                                return;
 
                                         } 
                                     })()
@@ -81,7 +111,7 @@ class Item extends React.Component {
                         </div>
                         <div className="pricing" style={{alignSelf: "end"}}>
                             <div>
-                                <span style={{fontSize: '11pt'}}>TOTAL PRICE</span>
+                                <span className="total-price-tab">TOTAL PRICE</span>
                                 <p className="total-price">₼{(this.state.itmPrice * this.state.itemQty).toFixed(2)}</p>
                             </div>
                             <div>

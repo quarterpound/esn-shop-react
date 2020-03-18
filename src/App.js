@@ -2,7 +2,7 @@ import React from 'react';
 import NavBar from './components/NavBar';
 import Home from './pages/Home';
 import ItemPage from './pages/Item';
-import {BrowserRouter as Router, Route, Switch, useParams, Redirect} from 'react-router-dom';
+import {BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom';
 
 class App extends React.Component {
 	render() {
@@ -10,7 +10,7 @@ class App extends React.Component {
 			<div className="App">
 				<Router>
 					<NavBar cats={["t-shirts", "bags", "Sweat Shirts"]} />
-					<div style={{width: "60%", margin: "20px auto"}}>
+					<div className="pageContainer">
 						<Switch>
 							<Route exact path="/">
 								<Home />
@@ -22,7 +22,7 @@ class App extends React.Component {
 								<Redirect to="/" />
 							</Route>
 							<Route path="/category/:cat">
-								<ItemPage />
+								<Redirect to="/" />
 							</Route>
 							<Route path="/product/:id">
 								<ItemPage />

@@ -3,3 +3,9 @@
     grid-gap: 30px;
     grid-template-columns: 1fr 1fr 1fr 1fr;
 }
+
+.pageContainer {
+    height: 100vh;
+    width: var(--page-width);
+    margin: 60px auto
+}
