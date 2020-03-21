@@ -1,8 +1,9 @@
 import React from 'react';
+import {BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom';
 import NavBar from './components/NavBar';
 import Home from './pages/Home';
 import ItemPage from './pages/Item';
-import {BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom';
+import Category from './pages/Category';
 
 class App extends React.Component {
 	render() {
@@ -12,9 +13,6 @@ class App extends React.Component {
 					<NavBar cats={["t-shirts", "bags", "Sweat Shirts"]} />
 					<div className="pageContainer">
 						<Switch>
-							<Route exact path="/">
-								<Home />
-							</Route>
 							<Route exact path="/category">
 								<Redirect to="/" />
 							</Route>
@@ -22,10 +20,13 @@ class App extends React.Component {
 								<Redirect to="/" />
 							</Route>
 							<Route path="/category/:cat">
-								<Redirect to="/" />
+								<Category />
 							</Route>
 							<Route path="/product/:id">
 								<ItemPage />
+							</Route>
+							<Route exact path="/">
+								<Home />
 							</Route>
 						</Switch>
 					</div>

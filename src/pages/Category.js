@@ -1,14 +1,19 @@
 import React from 'react';
 import axios from "axios";
+import { useParams } from 'react-router-dom';
 import ItemsHolder from '../components/ItemsHolder';
 import "./Home.css";
-import { ITEMS, IMAGES } from '../c';
+import { CATEGORIES, IMAGES } from '../c';
 
-class Home extends React.Component {
+class Category extends React.Component {
     state = {}
-    
-    componentDidMount = async () => {
-        const itemsRaw = await axios.get(ITEMS);
+
+    componentDidMount = () => {
+        this.getCategory()
+    }
+
+    getCategory = async () => {
+        const itemsRaw = await axios.get(`${CATEGORIES}/${this.props.cat}`);
         this.setState({items: itemsRaw.data.map(i => {
             return {
                 id: i.id,
@@ -36,4 +41,10 @@ class Home extends React.Component {
     }
 }
 
-export default Home;
+
+function CategoryWrapper () {
+    let {cat} = useParams();
+    return (<Category cat={cat} key={cat} />)
+}
+
+export default CategoryWrapper;

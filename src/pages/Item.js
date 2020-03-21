@@ -1,7 +1,9 @@
 import React from 'react';
-import { useParams } from 'react-router-dom';
 import qrcode from 'qrcode';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
+import {connect} from 'react-redux';
+import actions from '../actions';
 import {ITEMS} from '../c';
 import Icon from '../components/Icon';
 import loading from '../assets/loading.gif';
@@ -40,6 +42,21 @@ class Item extends React.Component {
                 console.log(e);
             }
         }        
+    }
+
+    isThisItemInCart = () => {
+        return this.props.cart.filter(c => {
+            if(c.id === this.props.item) {
+                return c;
+            } 
+            return null;
+        }).length === 1
+    }
+
+    addToCart = () => {
+        if(!this.isThisItemInCart()) {
+            this.props.addItem({id: this.props.item, qty: this.state.itmQty})
+        }
     }
 
     generateQrCode = async () => {
@@ -113,23 +130,11 @@ class Item extends React.Component {
                             </div>
                             <div className="moreDetailstabs">
                                 <div className="tabSwitchBar">
-                                    <button data-tab-index="0" className={(this.state.selectedTab === 0) ? "selected" : ""} onClick={(e) => {this.handleTabSwitch(e)}}>DETAILS</button>
+                                    {/* <button data-tab-index="0" className={(this.state.selectedTab === 0) ? "selected" : ""} onClick={(e) => {this.handleTabSwitch(e)}}>DETAILS</button> */}
                                     <button data-tab-index="1" className={(this.state.selectedTab === 1) ? "selected" : ""} onClick={(e) => {this.handleTabSwitch(e)}}>DESCRIPTION</button>
                                 </div>
                                 <div className="tabOuter">
-                                {
-                                    (() => {
-                                        switch (this.state.selectedTab) {
-                                            case 0:
-                                                return (<Tab0 />)
-                                            case 1:
-                                                return (<Tab1 data={this.state.itmDesc} />)
-                                            default:
-                                                return;
-
-                                        } 
-                                    })()
-                                }
+                                    <Tab1 data={this.state.itmDesc} />
                                 </div>
                             </div>
                         </div>
@@ -139,7 +144,11 @@ class Item extends React.Component {
                                 <p className="total-price">₼{(this.state.itmPrice * this.state.itmQty).toFixed(2)}</p>
                             </div>
                             <div>
-                                <button className="add-to-cart">Add to Cart</button>
+                                {
+                                    (() => {
+                                        return <button className="add-to-cart" style={this.isThisItemInCart() ? {backgroundColor: 'var(--color-orange)'} : {}} disabled={this.isThisItemInCart()} onClick={this.addToCart}>{this.isThisItemInCart() ? "Added to cart!" : "Add to cart"}</button>
+                                    })()
+                                }
                             </div>
                         </div>
                     </div>
@@ -149,22 +158,9 @@ class Item extends React.Component {
     }
 }
 
-function ItemWrapper() {
+function ItemWrapper(props) {
     let {id} = useParams();
-    return (<Item item={id} />)
-}
-
-function Tab0() {
-    return (
-        <div>
-            <ul>
-                <li>Something</li>
-                <li>Something</li>
-                <li>Something</li>
-                <li>Something</li>
-            </ul>
-        </div>
-    )
+    return (<Item item={id} cart={props.cart} addItem={props.addItem} removeItem={props.removeItem} />)
 }
 
 const Tab1 = (props) => {
@@ -183,4 +179,4 @@ const Tab1 = (props) => {
     )
 }
 
-export default ItemWrapper;
+export default connect(state => {return {cart: state}}, actions)(ItemWrapper);

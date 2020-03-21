@@ -1,13 +1,14 @@
-const removeItem = () => {
+const removeItem = (payload) => {
     return {
         type: "REMOVE",
+        payload,
     }
 }
 
 const addItem = (payload) => {
     return {
         type: "ADD",
-        payload
+        payload,
     }
 }
 
