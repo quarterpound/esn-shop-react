@@ -1,5 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import actions from '../actions';
 import Icon from './Icon';
 import cart from "../assets/supermarket.svg";
 import esn from "../assets/AZ_colour.png";
@@ -8,6 +10,8 @@ import './NavBar.css';
 
 class NavBar extends React.Component {
     render() {
+        console.log(this.props.cart);
+
         return (
             <div className="navBarOuter">
                 <div className="navBarInner">
@@ -22,7 +26,7 @@ class NavBar extends React.Component {
                                 (() => {
                                     if(this.props.cats.length > 0) {
                                         return this.props.cats.map((cat, key) => {
-                                            return <li><Link key={key} to={`/category/${cat.toLowerCase().replace(" ", "-")}`} >{cat}</Link></li>
+                                            return <li key={key}><Link to={`/category/${cat.toLowerCase().replace(" ", "-")}`} >{cat}</Link></li>
                                         })
                                     }
                                 })()
@@ -36,4 +40,4 @@ class NavBar extends React.Component {
     }
 }
 
-export default NavBar;
+export default connect((state) => {return {cart: state}}, actions)(NavBar);

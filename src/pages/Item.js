@@ -1,29 +1,48 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
 import qrcode from 'qrcode';
+import axios from 'axios';
+import {ITEMS} from '../c';
 import Icon from '../components/Icon';
 import loading from '../assets/loading.gif';
 import Slider from '../components/Slider';
-import sampleImage from '../assets/bag.jpg'
-import sampleImage1 from '../assets/img5.jpg'
 import plus from '../assets/plus.svg';
 import minus from '../assets/minus.svg';
 import "./Item.css"
 
 class Item extends React.Component {
     state = {
-        selectedTab: 0,
-        itemQty: 1,
+        selectedTab: 1,
+        itmQty: 1,
         itmPrice: 345.00,
         currentSlide: 0,
     }
 
-    images = [
-        sampleImage,
-        sampleImage1,
-    ]
-
     async componentDidMount() {
+        this.getItem();
+        this.generateQrCode();
+    }
+
+    getItem = async () => {
+        try {
+            const rawItem = await axios.get(`${ITEMS}/${this.props.item}`);
+            this.setState({
+                itmPrice: rawItem.data.price,
+                itmQtyMax: rawItem.data.quantity,
+                itmTitle: rawItem.data.title,
+                itmImages: rawItem.data.images,
+                itmCtg: rawItem.data.category,
+                itmDesc: rawItem.data.description
+            })
+
+        }catch(e) {
+            if(e) {
+                console.log(e);
+            }
+        }        
+    }
+
+    generateQrCode = async () => {
         const qr = await qrcode.toDataURL(window.location.href, {margin: 0})
         this.setState({
             qrCode: qr
@@ -34,12 +53,12 @@ class Item extends React.Component {
         e.preventDefault();
         switch (e.currentTarget.getAttribute("data-qty-action")) {
             case "minus":
-                if(this.state.itemQty > 1)
-                    this.setState({itemQty: this.state.itemQty - 1})
+                if(this.state.itmQty > 1)
+                    this.setState({itmQty: this.state.itmQty - 1})
                 break;
             case "plus":
-                if(this.state.itemQty < 10)
-                    this.setState({itemQty: this.state.itemQty + 1})
+                if(this.state.itmQty < this.state.itmQtyMax)
+                    this.setState({itmQty: this.state.itmQty + 1})
                 break;
             default:
                 return;
@@ -53,19 +72,24 @@ class Item extends React.Component {
 
 
     render = () => {
-        console.log(this.images);
         return (
             <div className="itemOuter">
                 <div className="itemInner">
                     <div>
-                        <Slider images={this.images} />
+                        {
+                            (() => {
+                                if(this.state.itmImages) {
+                                    return <Slider images={this.state.itmImages} />
+                                }
+                            })()
+                        }
                     </div>
                     <div className="itemDetails">
                         <div>
                             <div className="qrCode">
                                 <div>
-                                    <p className="itemCategory">Category</p>
-                                    <h1 className="itemName">Item Name</h1>
+                                    <p className="itemCategory">{this.state.itmCtg}</p>
+                                    <h1 className="itemName">{this.state.itmTitle}</h1>
                                 </div>
                                 <div className="qrCodeContainer">
                                     <img className="qrCodeImage" src={ this.state.qrCode || loading} alt="QR Code" />
@@ -81,7 +105,7 @@ class Item extends React.Component {
                                     <div className="quantityContainer">
                                         <div className="quantityContainerInner">
                                             <button data-qty-action="minus" onClick={(e) => {this.handleQtyChange(e)}} className="button-spec"><Icon width="10px" src={minus} /></button>
-                                            <span style={{justifySelf: 'center'}}>{this.state.itemQty}</span>
+                                            <span style={{justifySelf: 'center'}}>{this.state.itmQty}</span>
                                             <button data-qty-action="plus" onClick={(e) => {this.handleQtyChange(e)}} className="button-spec"><Icon width="10px" src={plus} /></button>
                                         </div>
                                     </div>
@@ -99,7 +123,7 @@ class Item extends React.Component {
                                             case 0:
                                                 return (<Tab0 />)
                                             case 1:
-                                                return (<Tab1 />)
+                                                return (<Tab1 data={this.state.itmDesc} />)
                                             default:
                                                 return;
 
@@ -112,7 +136,7 @@ class Item extends React.Component {
                         <div className="pricing" style={{alignSelf: "end"}}>
                             <div>
                                 <span className="total-price-tab">TOTAL PRICE</span>
-                                <p className="total-price">₼{(this.state.itmPrice * this.state.itemQty).toFixed(2)}</p>
+                                <p className="total-price">₼{(this.state.itmPrice * this.state.itmQty).toFixed(2)}</p>
                             </div>
                             <div>
                                 <button className="add-to-cart">Add to Cart</button>
@@ -143,10 +167,18 @@ function Tab0() {
     )
 }
 
-function Tab1() {
+const Tab1 = (props) => {
     return (
         <div>
-            <p>Really Cool ESN Blue BagCupidatat occaecat voluptate ut dolor culpa ullamco laborum consectetur elit laboris. Nisi occaecat amet consequat incididunt labore reprehenderit adipisicing exercitation commodo deserunt. Voluptate officia consequat mollit dolor adipisicing aliqua amet adipisicing Lorem irure.</p>
+            {
+                (() => {
+                    if(props.data) {
+                        return props.data.split('\n').map(p => {
+                            return <p key={p}>{p}</p>
+                        })
+                    }
+                })()
+            }
         </div>
     )
 }
