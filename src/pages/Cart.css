@@ -21,14 +21,13 @@
 
 .itemsHolder {
     display: block;
-    height: 400px;
+    height: 330px;
     padding-right: 20px;
     overflow-y: auto;    
 }
 
 .itemsContainer {
     display: grid;
-    grid-template-rows: 1fr 50px;
 }
 
 .itemImage {
@@ -59,7 +58,7 @@
 
 .formRow {
     display: grid;
-    padding: 10px 0;
+    padding: 20px 0;
     grid-gap: 10px;
 }
 

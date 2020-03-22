@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import validator from 'validate.js';
 import { connect } from 'react-redux';
 import { ITEMS, IMAGES } from '../c';
 import actions from '../actions';
@@ -10,14 +11,54 @@ class Cart extends React.Component {
 
     componentDidMount = () => {
         this.getCartItems();
+        this.calculateTotal();
     }
 
     calculateTotal = () => {
-        let sum = 0;
-        for(const t of this.state.cart) {
-            sum += t.price * t.qty;
+        if(this.state.cart) {
+            let sum = 0;
+            for(const t of this.state.cart) {
+                sum += t.price * t.qty;
+            }
+            this.setState({total: sum});
         }
-        this.setState({total: sum});
+        this.setState({total: 0});
+    }
+
+    submitOrder = async (e) => {
+        e.preventDefault();
+        console.log(validator(this.state, this.constraints));
+        console.log(this.state);
+    }
+
+    constraints = {
+        first: {
+            presence: true,
+            type: "string",
+            length: {
+                minimum: 1,
+                maximum: 30,
+            }
+        },
+        last: {
+            presence: true,
+            type: "string",
+            length: {
+                minimum: 1,
+                maximum: 30,
+            }
+        },
+        email: {
+            presence: true,
+            email: true,
+        },
+        phone: {
+            presence: true,
+            length: {
+                minimum: 9,
+                maximum: 10,
+            }
+        }
     }
 
     getCartItems = async () => {
@@ -55,31 +96,29 @@ class Cart extends React.Component {
     }
 
     render() {
-        console.log(this.state.cart);
         return (
             <div>
                 <h2 className="pageTitle">Cart</h2>
                 <div className="smallGrid">
                     <div className="itemsContainer">
                         <div className="itemsHolder">
-                            {
-
-                                (() => {
-                                    if(this.state.cart) {
-                                        return this.state.cart.map((itm, key) => {
-                                            return (
-                                                <div key={key} className="itemPreview">
-                                                    <img className="itemImage" alt={itm.title} src={`${IMAGES}/${itm.image}`} />
-                                                    <p className="itemText">{itm.title}</p>
-                                                    <p>{itm.qty}</p>
-                                                    <p style={{fontWeight: 'bold'}} >₼ {itm.price.toFixed(2)}</p>
-                                                    <button style={{justifySelf: 'right'}} index={itm.id} onClick={this.removeFromCart} >X</button>
-                                                </div>
-                                            )
-                                        })
-                                    }
-                                })()
-                            }
+                        {
+                            (() => {
+                                if(this.state.cart) {
+                                    return this.state.cart.map((itm, key) => {
+                                        return (
+                                            <div key={key} className="itemPreview">
+                                                <img className="itemImage" alt={itm.title} src={`${IMAGES}/${itm.image}`} />
+                                                <p className="itemText">{itm.title}</p>
+                                                <p>{itm.qty}</p>
+                                                <p style={{fontWeight: 'bold'}} >₼ {itm.price.toFixed(2)}</p>
+                                                <button style={{justifySelf: 'right'}} index={itm.id} onClick={this.removeFromCart} >X</button>
+                                            </div>
+                                        )
+                                    })
+                                }
+                            })()
+                        }
                         </div>
                         <div className="totalContainer">
                             <h3 className="totalTitle">Total</h3>
@@ -91,20 +130,20 @@ class Cart extends React.Component {
                             <h3 className="checkOutTitle">Check out</h3>
                             <form>
                                 <div className="formRow" style={{gridTemplateColumns: "1fr 1fr"}}>
-                                    <input type="text" placeholder="First Name" className="formInput" />
-                                    <input type="text" placeholder="Last Name" className="formInput" />
+                                    <input onChange={((e) => {e.persist(); this.setState({first: e.currentTarget.value})})} type="text" placeholder="First Name" className="formInput" />
+                                    <input onChange={((e) => {e.persist(); this.setState({last: e.currentTarget.value})})} type="text" placeholder="Last Name" className="formInput" />
                                 </div>
                                 <div className="formRow" style={{gridTemplateColumns: "1fr"}}>
-                                    <input type="email" placeholder="Email" className="formInput" />
+                                    <input onChange={((e) => {e.persist(); this.setState({email: e.currentTarget.value})})} type="email" placeholder="Email" className="formInput" />
                                 </div>
                                 <div className="formRow" style={{gridTemplateColumns: "1fr"}}>
-                                    <input type="text" placeholder="Phone Number (551230000)" className="formInput" />
+                                    <input onChange={((e) => {e.persist(); this.setState({phone: e.currentTarget.value})})} type="text" placeholder="Phone Number (551230000)" className="formInput" />
                                 </div>
                                 <div className="finePrint">
                                     <p>By placing this order you agree to </p>
                                 </div>
                                 <div className="formRow">
-                                    <button className="formInput">Place Order</button>
+                                    <button onClick={this.submitOrder} className="formInput">Place Order</button>
                                 </div>                                
                             </form>
                         </div>
