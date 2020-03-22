@@ -4,6 +4,7 @@ import NavBar from './components/NavBar';
 import Home from './pages/Home';
 import ItemPage from './pages/Item';
 import Category from './pages/Category';
+import Cart from './pages/Cart';
 
 class App extends React.Component {
 	render() {
@@ -18,6 +19,9 @@ class App extends React.Component {
 							</Route>
 							<Route exact path="/product">
 								<Redirect to="/" />
+							</Route>
+							<Route exact path="/cart">
+								<Cart />
 							</Route>
 							<Route path="/category/:cat">
 								<Category />

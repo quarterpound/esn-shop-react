@@ -1,0 +1,76 @@
+.pageTitle {
+    padding: 0;
+    margin:0;
+}
+
+.smallGrid {
+    display: grid;
+    grid-gap: 20px;
+    grid-template-columns: 2fr 1fr;
+}
+
+.itemPreview {
+    display: grid;
+    align-items: center;
+    justify-items: center;
+    grid-gap: 10px;
+    padding: 20px 0;
+    border-bottom: 1px solid var(--color-gray);
+    grid-template-columns: 1fr 2fr 1fr 1fr 1fr;
+}
+
+.itemsHolder {
+    display: block;
+    height: 400px;
+    padding-right: 20px;
+    overflow-y: auto;    
+}
+
+.itemsContainer {
+    display: grid;
+    grid-template-rows: 1fr 50px;
+}
+
+.itemImage {
+    display: block;
+    width: 100%;
+}
+
+.itemText {
+    font-weight: bolder;
+    text-align: center;
+}
+
+.total, .totalTitle {
+    text-align: right;
+}
+
+.checkOutInner {
+    padding: 8px 12px;
+    border: 1px solid var(--color-gray);
+    border-radius: 1px;
+}
+
+.checkOutTitle {
+    text-align: center;
+    padding: 10px;
+    margin: 0;
+}
+
+.formRow {
+    display: grid;
+    padding: 10px 0;
+    grid-gap: 10px;
+}
+
+.formInput {
+    border: 1px solid var(--color-gray);
+    padding: 10px 18px;
+    border-radius: 2px;
+}
+
+.finePrint > p {
+    margin: 8px 0;
+    letter-spacing: unset;
+    font-size: 10pt;
+}

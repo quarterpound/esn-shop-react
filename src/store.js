@@ -9,8 +9,8 @@ const rootReducer = (state = initalState, action) => {
             cookie.set("cart", [action.payload, ...state], {path: "/"});
             return [action.payload, ...state];
         case "REMOVE":
-            cookie.set("cart", state.filter((t, i) => {return i !== action.payload}), {path: "/"});
-            return state.filter((t, i) => {return i !== action.payload});
+            cookie.set("cart", state.filter(t => {return t.id !== action.payload}), {path: "/"});
+            return state.filter(t => {return t.id !== action.payload});
         case "CLEAR":
             cookie.remove("cart")
             return [];
