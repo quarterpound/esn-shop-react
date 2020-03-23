@@ -17,7 +17,7 @@ class Category extends React.Component {
 
     getCategory = async () => {
         const itemsRaw = await axios.get(`${CATEGORIES}/${this.props.cat}`);
-        this.setState({items: itemsRaw.data.map(i => {
+        this.setState({hasFound: itemsRaw.data.length > 0, items: itemsRaw.data.map(i => {
             return {
                 id: i.id,
                 title: i.title,
@@ -28,22 +28,51 @@ class Category extends React.Component {
     }
 
     render() {
+        const title = `${this.props.cat.split("-").map(t => {return h.capitalize(t)}).join(" ")} | ESN Azerbaijan Webshop`
+        if(!this.state.hasFound && typeof this.state.hasFound !== 'undefined') {
+            const itmTitle = `Not Found | ESN Azerbaijan Webshop`;
+            const itmDesc = "Want exclusive, cool ESN products and feel the wave of esners? Then you are in the right place. Where discounted prices and coolest products meet.";
+            const itmImage = ESN;
+            return (
+                <>
+                    <MetaTags>
+                        <title>{itmTitle}</title>
+                        <meta name="title" content={itmTitle} />
+                        <meta name="description" content="Want exclusive, cool ESN products and feel the wave of esners? Then you are in the right place. Where discounted prices and coolest products meet." />
+
+                        <meta property="og:type" content="website" />
+                        <meta property="og:url" content="https://webshop.esn.az" />
+                        <meta property="og:title" content={itmTitle} />
+                        <meta property="og:description" content={itmDesc} />
+                        <meta property="og:image" content={itmImage} />
+
+                        <meta property="twitter:card" content="summary_large_image" />
+                        <meta property="twitter:url" content="https://webshop.esn.az" />
+                        <meta property="twitter:title" content={itmTitle} />
+                        <meta property="twitter:description" content={itmDesc} />
+                        <meta property="twitter:image" content={itmImage} />
+                    </MetaTags>
+                    <h2 style={{textAlign: 'center'}}>Sorry, the category you're looking for was not found</h2>
+                </>
+            )
+        }
+
         return (
             <div className="homeOuter">
                 <MetaTags>
-                    <title>{this.props.cat.split("-").map(t => {return h.capitalize(t)}).join(" ")} | ESN Azerbaijan Webshop</title>
-                    <meta name="title" content="Home | ESN Azerbaijan Webshop" />
+                    <title>{title}</title>
+                    <meta name="title" content={title} />
                     <meta name="description" content="Want exclusive, cool ESN products and feel the wave of esners? Then you are in the right place. Where discounted prices and coolest products meet." />
 
                     <meta property="og:type" content="website" />
                     <meta property="og:url" content="https://webshop.esn.az" />
-                    <meta property="og:title" content="Home | ESN Azerbaijan Webshop" />
+                    <meta property="og:title" content={title} />
                     <meta property="og:description" content="Want exclusive, cool ESN products and feel the wave of esners? Then you are in the right place. Where discounted prices and coolest products meet." />
                     <meta property="og:image" content={ESN} />
 
                     <meta property="twitter:card" content="summary_large_image" />
                     <meta property="twitter:url" content="https://webshop.esn.az" />
-                    <meta property="twitter:title" content="Home | ESN Azerbaijan Webshop" />
+                    <meta property="twitter:title" content={title} />
                     <meta property="twitter:description" content="Want exclusive, cool ESN products and feel the wave of esners? Then you are in the right place. Where discounted prices and coolest products meet." />
                     <meta property="twitter:image" content={ESN} />
                 </MetaTags>

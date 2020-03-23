@@ -124,7 +124,7 @@ class Cart extends React.Component {
             return (
                 <div>
                     <h2 className="pageTitle">Cart</h2>
-                    <h4 style={{textAlign: "center"}}>Your cart seems to be empty</h4>
+                    <h2 style={{textAlign: "center"}}>Your cart seems to be empty</h2>
                     <p style={{textAlign: "center"}}>Redirecting to homepage</p>
                 </div>
             )
