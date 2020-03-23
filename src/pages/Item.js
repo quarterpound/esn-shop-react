@@ -3,6 +3,8 @@ import qrcode from 'qrcode';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import {connect} from 'react-redux';
+import MetaTags from 'react-meta-tags';
+import { IMAGES } from '../c';
 import actions from '../actions';
 import {ITEMS} from '../c';
 import Icon from '../components/Icon';
@@ -34,7 +36,8 @@ class Item extends React.Component {
                 itmTitle: rawItem.data.title,
                 itmImages: rawItem.data.images,
                 itmCtg: rawItem.data.category,
-                itmDesc: rawItem.data.description
+                itmDesc: rawItem.data.description,
+                itmThumb: rawItem.data.thumb
             })
 
         }catch(e) {
@@ -89,8 +92,30 @@ class Item extends React.Component {
 
 
     render = () => {
+        const itmTitle = `${this.state.itmTitle || 'Loading...'} | ESN Azerbaijan Webshop`;
+        const itmDesc = this.state.itmDesc;
+        const itmImage = `${IMAGES}/${this.state.itmThumb}`;
+
+
         return (
             <div className="itemOuter">
+                <MetaTags>
+                    <title>{itmTitle}</title>
+                    <meta name="title" content={itmTitle} />
+                    <meta name="description" content="Want exclusive, cool ESN products and feel the wave of esners? Then you are in the right place. Where discounted prices and coolest products meet." />
+
+                    <meta property="og:type" content="website" />
+                    <meta property="og:url" content="https://webshop.esn.az" />
+                    <meta property="og:title" content={itmTitle} />
+                    <meta property="og:description" content={itmDesc} />
+                    <meta property="og:image" content={itmImage} />
+
+                    <meta property="twitter:card" content="summary_large_image" />
+                    <meta property="twitter:url" content="https://webshop.esn.az" />
+                    <meta property="twitter:title" content={itmTitle} />
+                    <meta property="twitter:description" content={itmDesc} />
+                    <meta property="twitter:image" content={itmImage} />
+                </MetaTags>
                 <div className="itemInner">
                     <div>
                         {
@@ -146,7 +171,7 @@ class Item extends React.Component {
                             <div>
                                 {
                                     (() => {
-                                        return <button className="add-to-cart" style={this.isThisItemInCart() ? {backgroundColor: 'var(--color-orange)'} : {}} disabled={this.isThisItemInCart()} onClick={this.addToCart}>{this.isThisItemInCart() ? "Added to cart!" : "Add to cart"}</button>
+                                        return <button className="add-to-cart" style={this.isThisItemInCart() ? {backgroundColor: 'var(--color-purple)'} : {}} disabled={this.isThisItemInCart()} onClick={this.addToCart}>{this.isThisItemInCart() ? "Added to cart!" : "Add to cart"}</button>
                                     })()
                                 }
                             </div>

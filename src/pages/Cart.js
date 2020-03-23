@@ -2,6 +2,8 @@ import React from 'react';
 import axios from 'axios';
 import validator from 'validate.js';
 import { connect } from 'react-redux';
+import MetaTags from 'react-meta-tags';
+import ESN from '../assets/AZ_colour.png';
 import { ITEMS, IMAGES, PURCHASES } from '../c';
 import actions from '../actions';
 import "./Cart.css";
@@ -115,10 +117,39 @@ class Cart extends React.Component {
     }
 
     render() {
+        if(this.state.cart && this.state.cart.length === 0) {
+            setTimeout(() => {
+                window.location.href = "/";
+            }, 2000)
+            return (
+                <div>
+                    <h2 className="pageTitle">Cart</h2>
+                    <h4 style={{textAlign: "center"}}>Your cart seems to be empty</h4>
+                    <p style={{textAlign: "center"}}>Redirecting to homepage</p>
+                </div>
+            )
+        }
+
         return (
             <div>
-                <h2 className="pageTitle">Cart</h2>
                 <div className="smallGrid">
+                    <MetaTags>
+                        <title>Cart | ESN Azerbaijan Webshop</title>
+                        <meta name="title" content="Cart | ESN Azerbaijan Webshop" />
+                        <meta name="description" content="Want exclusive, cool ESN products and feel the wave of esners? Then you are in the right place. Where discounted prices and coolest products meet." />
+
+                        <meta property="og:type" content="website" />
+                        <meta property="og:url" content="https://webshop.esn.az" />
+                        <meta property="og:title" content="Cart | ESN Azerbaijan Webshop" />
+                        <meta property="og:description" content="Want exclusive, cool ESN products and feel the wave of esners? Then you are in the right place. Where discounted prices and coolest products meet." />
+                        <meta property="og:image" content={ESN} />
+
+                        <meta property="twitter:card" content="summary_large_image" />
+                        <meta property="twitter:url" content="https://webshop.esn.az" />
+                        <meta property="twitter:title" content="Cart | ESN Azerbaijan Webshop" />
+                        <meta property="twitter:description" content="Want exclusive, cool ESN products and feel the wave of esners? Then you are in the right place. Where discounted prices and coolest products meet." />
+                        <meta property="twitter:image" content={ESN} />
+                    </MetaTags>
                     <div className="itemsContainer">
                         <div className="itemsHolder">
                         {

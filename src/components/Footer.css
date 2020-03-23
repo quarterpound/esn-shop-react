@@ -1,0 +1,28 @@
+.footer {
+    width: 100%;
+    /* background-color: red; */
+    align-self: end;
+}
+
+.copyright {
+    font-size: 10pt;
+}
+
+.copyright, .socialLinks {
+    text-align: center;
+}
+
+.copyright > a, .copyright > a:visited, .copyright > a:active {
+    color: var(--color-orange);
+}
+
+.socialLinks {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}
+
+.socialLinks > li {
+    display: inline-block;
+    margin: 0 20px;
+}
