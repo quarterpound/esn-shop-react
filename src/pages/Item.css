@@ -1,7 +1,3 @@
-p {
-    letter-spacing: var(--letter-spacing);
-}
-
 .qrCode {
     display: grid;
     grid-template-columns: auto 160px;
@@ -101,7 +97,7 @@ p {
     height: 100%;
     background-color: white;
     color: var(--color-gray);
-    letter-spacing: var(--letter-spacing);
+    /* letter-spacing: var(--letter-spacing); */
     border: none;
     cursor: pointer;
     text-align: left;

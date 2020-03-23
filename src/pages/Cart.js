@@ -2,16 +2,15 @@ import React from 'react';
 import axios from 'axios';
 import validator from 'validate.js';
 import { connect } from 'react-redux';
-import { ITEMS, IMAGES } from '../c';
+import { ITEMS, IMAGES, PURCHASES } from '../c';
 import actions from '../actions';
 import "./Cart.css";
 
 class Cart extends React.Component {
-    state = {};
+    state = {success: false, submitLoading: false};
 
     componentDidMount = () => {
         this.getCartItems();
-        this.calculateTotal();
     }
 
     calculateTotal = () => {
@@ -20,15 +19,37 @@ class Cart extends React.Component {
             for(const t of this.state.cart) {
                 sum += t.price * t.qty;
             }
-            this.setState({total: sum});
+            return sum;
         }
-        this.setState({total: 0});
+        return 0;
     }
 
     submitOrder = async (e) => {
         e.preventDefault();
-        console.log(validator(this.state, this.constraints));
-        console.log(this.state);
+        if(!validator(this.state, this.constraints) && this.props.cart.length !== 0){
+            this.setState({submitLoading: true});
+            try {
+                await axios.post(`${PURCHASES}`, {
+                    first: this.state.first,
+                    last: this.state.last,
+                    email: this.state.email,
+                    phoneNumber: this.state.phone,
+                    items: this.props.cart.map(t => {
+                        return {
+                            id: t.id,
+                            quantity: t.qty,
+                        }
+                    })
+                })
+                this.setState({submitLoading: false, success: true});
+                setTimeout(() => {
+                    window.location.href = "/";
+                }, 3000);
+                this.props.clear();
+            } catch(e) {
+                console.log(e);
+            }
+        };
     }
 
     constraints = {
@@ -79,7 +100,6 @@ class Cart extends React.Component {
         }
 
         this.setState({cart: itemsMapped});
-        this.calculateTotal();
 
     }
 
@@ -92,7 +112,6 @@ class Cart extends React.Component {
                 cart: state.cart.filter(t => {return t.id !== index})
             }
         })
-        this.calculateTotal();
     }
 
     render() {
@@ -122,30 +141,50 @@ class Cart extends React.Component {
                         </div>
                         <div className="totalContainer">
                             <h3 className="totalTitle">Total</h3>
-                            <p className="total">₼ {this.state.total ? this.state.total.toFixed(2) : "Calcualting..."}</p>
+                            <p className="total">₼ {this.calculateTotal().toFixed(2)}</p>
                         </div>
                     </div>
                     <div className="checkOut">
-                        <div className="checkOutInner">
-                            <h3 className="checkOutTitle">Check out</h3>
-                            <form>
-                                <div className="formRow" style={{gridTemplateColumns: "1fr 1fr"}}>
-                                    <input onChange={((e) => {e.persist(); this.setState({first: e.currentTarget.value})})} type="text" placeholder="First Name" className="formInput" />
-                                    <input onChange={((e) => {e.persist(); this.setState({last: e.currentTarget.value})})} type="text" placeholder="Last Name" className="formInput" />
-                                </div>
-                                <div className="formRow" style={{gridTemplateColumns: "1fr"}}>
-                                    <input onChange={((e) => {e.persist(); this.setState({email: e.currentTarget.value})})} type="email" placeholder="Email" className="formInput" />
-                                </div>
-                                <div className="formRow" style={{gridTemplateColumns: "1fr"}}>
-                                    <input onChange={((e) => {e.persist(); this.setState({phone: e.currentTarget.value})})} type="text" placeholder="Phone Number (551230000)" className="formInput" />
-                                </div>
-                                <div className="finePrint">
-                                    <p>By placing this order you agree to </p>
-                                </div>
-                                <div className="formRow">
-                                    <button onClick={this.submitOrder} className="formInput">Place Order</button>
-                                </div>                                
-                            </form>
+                        <div className="checkOutInner" style={ this.state.success ? {height: "100%", border: 'none'} : {} }>
+                            {
+                                (() => {
+                                    if(!this.state.success) {
+                                        return (
+                                            <div>
+                                                <h3 className="checkOutTitle">Check out</h3>
+                                                <form>
+                                                    <div className="formRow" style={{gridTemplateColumns: "1fr 1fr"}}>
+                                                        <input disabled={this.state.submitLoading} onChange={((e) => {e.persist(); this.setState({first: e.currentTarget.value})})} type="text" placeholder="First Name" className="formInput" />
+                                                        <input disabled={this.state.submitLoading} onChange={((e) => {e.persist(); this.setState({last: e.currentTarget.value})})} type="text" placeholder="Last Name" className="formInput" />
+                                                    </div>
+                                                    <div className="formRow" style={{gridTemplateColumns: "1fr"}}>
+                                                        <input disabled={this.state.submitLoading} onChange={((e) => {e.persist(); this.setState({email: e.currentTarget.value})})} type="email" placeholder="Email" className="formInput" />
+                                                    </div>
+                                                    <div className="formRow" style={{gridTemplateColumns: "1fr"}}>
+                                                        <input disabled={this.state.submitLoading} onChange={((e) => {e.persist(); this.setState({phone: e.currentTarget.value})})} type="text" placeholder="Phone Number (551230000)" className="formInput" />
+                                                    </div>
+                                                    <div className="finePrint">
+                                                        <p>By placing this order you agree to </p>
+                                                    </div>
+                                                    <div className="formRow">
+                                                        <button disabled={this.state.submitLoading} onClick={this.submitOrder} className="formInput">Place Order</button>
+                                                    </div>                                
+                                                </form>
+                                            </div>
+                                        )
+                                    }
+
+                                    return (
+                                        <div>
+                                            <h2 style={{textAlign: 'center'}}>Success</h2>
+                                            <h3 style={{textAlign: 'center'}}>We will message you soon!</h3>
+                                            <div className="finePrint">
+                                                <p style={{textAlign: 'center'}}>You are being redirected to the home page, thanks for shopping with us, you will recieve an email shortly!</p>
+                                            </div>
+                                        </div>
+                                    )
+                                })()
+                            }
                         </div>
                     </div>
                 </div>
