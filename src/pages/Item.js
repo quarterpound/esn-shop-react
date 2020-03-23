@@ -4,6 +4,7 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import {connect} from 'react-redux';
 import MetaTags from 'react-meta-tags';
+import ESN from '../assets/AZ_colour.png'
 import { IMAGES } from '../c';
 import actions from '../actions';
 import {ITEMS} from '../c';
@@ -18,7 +19,6 @@ class Item extends React.Component {
     state = {
         selectedTab: 1,
         itmQty: 1,
-        itmPrice: 345.00,
         currentSlide: 0,
     }
 
@@ -31,6 +31,7 @@ class Item extends React.Component {
         try {
             const rawItem = await axios.get(`${ITEMS}/${this.props.item}`);
             this.setState({
+                hasFound: true,
                 itmPrice: rawItem.data.price,
                 itmQtyMax: rawItem.data.quantity,
                 itmTitle: rawItem.data.title,
@@ -41,9 +42,7 @@ class Item extends React.Component {
             })
 
         }catch(e) {
-            if(e) {
-                console.log(e);
-            }
+            this.setState({hasFound: false})
         }        
     }
 
@@ -96,7 +95,6 @@ class Item extends React.Component {
         const itmDesc = this.state.itmDesc;
         const itmImage = `${IMAGES}/${this.state.itmThumb}`;
 
-
         return (
             <div className="itemOuter">
                 <MetaTags>
@@ -116,68 +114,113 @@ class Item extends React.Component {
                     <meta property="twitter:description" content={itmDesc} />
                     <meta property="twitter:image" content={itmImage} />
                 </MetaTags>
-                <div className="itemInner">
-                    <div>
-                        {
-                            (() => {
-                                if(this.state.itmImages) {
-                                    return <Slider images={this.state.itmImages} />
-                                }
-                            })()
-                        }
-                    </div>
-                    <div className="itemDetails">
-                        <div>
-                            <div className="qrCode">
+                {
+                    (() => {
+                        if(this.state.itmTitle) {
+                            return (
+                                <div className="itemInner">
                                 <div>
-                                    <p className="itemCategory">{this.state.itmCtg}</p>
-                                    <h1 className="itemName">{this.state.itmTitle}</h1>
+                                    {
+                                        (() => {
+                                            if(this.state.itmImages) {
+                                                return <Slider images={this.state.itmImages} />
+                                            }
+                                        })()
+                                    }
                                 </div>
-                                <div className="qrCodeContainer">
-                                    <img className="qrCodeImage" src={ this.state.qrCode || loading} alt="QR Code" />
-                                </div>
-                            </div>
-                            <div className="itemPriceAndQty">
-                                <div>
-                                    <p className="tabTitle">PRICE</p>
-                                    <p className="itemPrice">₼{this.state.itmPrice.toFixed(2)}</p>
-                                </div>
-                                <div>
-                                    <p className="tabTitle">QUANTITY</p>
-                                    <div className="quantityContainer">
-                                        <div className="quantityContainerInner">
-                                            <button data-qty-action="minus" onClick={(e) => {this.handleQtyChange(e)}} className="button-spec"><Icon width="10px" src={minus} /></button>
-                                            <span style={{justifySelf: 'center'}}>{this.state.itmQty}</span>
-                                            <button data-qty-action="plus" onClick={(e) => {this.handleQtyChange(e)}} className="button-spec"><Icon width="10px" src={plus} /></button>
+                                <div className="itemDetails">
+                                    <div>
+                                        <div className="qrCode">
+                                            <div>
+                                                <p className="itemCategory">{this.state.itmCtg}</p>
+                                                <h1 className="itemName">{this.state.itmTitle}</h1>
+                                            </div>
+                                            <div className="qrCodeContainer">
+                                                <img className="qrCodeImage" src={ this.state.qrCode || loading} alt="QR Code" />
+                                            </div>
+                                        </div>
+                                        <div className="itemPriceAndQty">
+                                            <div>
+                                                <p className="tabTitle">PRICE</p>
+                                                <p className="itemPrice">{ this.state.itmPrice ? `₼${(this.state.itmPrice).toFixed(2)}` : "Loading..."}</p>
+                                            </div>
+                                            <div>
+                                                <p className="tabTitle">QUANTITY</p>
+                                                <div className="quantityContainer">
+                                                    <div className="quantityContainerInner">
+                                                        <button data-qty-action="minus" onClick={(e) => {this.handleQtyChange(e)}} className="button-spec"><Icon width="10px" src={minus} /></button>
+                                                        <span style={{justifySelf: 'center'}}>{this.state.itmQty}</span>
+                                                        <button data-qty-action="plus" onClick={(e) => {this.handleQtyChange(e)}} className="button-spec"><Icon width="10px" src={plus} /></button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div className="moreDetailstabs">
+                                            {
+                                                (() => {
+                                                    if(this.state.itmDesc) {
+                                                        return (
+                                                            <>
+                                                                <div className="tabSwitchBar">
+                                                                    {/* <button data-tab-index="0" className={(this.state.selectedTab === 0) ? "selected" : ""} onClick={(e) => {this.handleTabSwitch(e)}}>DETAILS</button> */}
+                                                                    <button data-tab-index="1" className={(this.state.selectedTab === 1) ? "selected" : ""} onClick={(e) => {this.handleTabSwitch(e)}}>DESCRIPTION</button>
+                                                                </div>
+                                                                <div className="tabOuter">
+                                                                    <Tab1 data={this.state.itmDesc} />
+                                                                </div>
+                                                            </>
+                                                        )
+                                                    }
+                                                })()
+                                            }
+                                        </div>
+                                    </div>
+                                    <div className="pricing" style={{alignSelf: "end"}}>
+                                        <div>
+                                            <span className="total-price-tab">TOTAL PRICE</span>
+                                            <p className="total-price">{ this.state.itmPrice ? `₼${(this.state.itmPrice * this.state.itmQty).toFixed(2)}` : "Loading..."}</p>
+                                        </div>
+                                        <div>
+                                            {
+                                                (() => {
+                                                    return <button className="add-to-cart" style={this.isThisItemInCart() ? {backgroundColor: 'var(--color-purple)'} : {}} disabled={this.isThisItemInCart()} onClick={this.addToCart}>{this.isThisItemInCart() ? "Added to cart!" : "Add to cart"}</button>
+                                                })()
+                                            }
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div className="moreDetailstabs">
-                                <div className="tabSwitchBar">
-                                    {/* <button data-tab-index="0" className={(this.state.selectedTab === 0) ? "selected" : ""} onClick={(e) => {this.handleTabSwitch(e)}}>DETAILS</button> */}
-                                    <button data-tab-index="1" className={(this.state.selectedTab === 1) ? "selected" : ""} onClick={(e) => {this.handleTabSwitch(e)}}>DESCRIPTION</button>
-                                </div>
-                                <div className="tabOuter">
-                                    <Tab1 data={this.state.itmDesc} />
-                                </div>
-                            </div>
-                        </div>
-                        <div className="pricing" style={{alignSelf: "end"}}>
-                            <div>
-                                <span className="total-price-tab">TOTAL PRICE</span>
-                                <p className="total-price">₼{(this.state.itmPrice * this.state.itmQty).toFixed(2)}</p>
-                            </div>
-                            <div>
-                                {
-                                    (() => {
-                                        return <button className="add-to-cart" style={this.isThisItemInCart() ? {backgroundColor: 'var(--color-purple)'} : {}} disabled={this.isThisItemInCart()} onClick={this.addToCart}>{this.isThisItemInCart() ? "Added to cart!" : "Add to cart"}</button>
-                                    })()
-                                }
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                            )
+                        } 
+                        else if(!this.state.hasFound && typeof this.state.hasFound !== 'undefined') {
+                            const itmTitle = `Not Found | ESN Azerbaijan Webshop`;
+                            const itmDesc = "Want exclusive, cool ESN products and feel the wave of esners? Then you are in the right place. Where discounted prices and coolest products meet.";
+                            const itmImage = ESN;
+                            return (
+                                <>
+                                <MetaTags>
+                                    <title>{itmTitle}</title>
+                                    <meta name="title" content={itmTitle} />
+                                    <meta name="description" content="Want exclusive, cool ESN products and feel the wave of esners? Then you are in the right place. Where discounted prices and coolest products meet." />
+                
+                                    <meta property="og:type" content="website" />
+                                    <meta property="og:url" content="https://webshop.esn.az" />
+                                    <meta property="og:title" content={itmTitle} />
+                                    <meta property="og:description" content={itmDesc} />
+                                    <meta property="og:image" content={itmImage} />
+                
+                                    <meta property="twitter:card" content="summary_large_image" />
+                                    <meta property="twitter:url" content="https://webshop.esn.az" />
+                                    <meta property="twitter:title" content={itmTitle} />
+                                    <meta property="twitter:description" content={itmDesc} />
+                                    <meta property="twitter:image" content={itmImage} />
+                                </MetaTags>
+                                <h2 style={{textAlign: 'center'}}>Sorry, the item you're looking for was not found</h2>
+                                </>
+                            )
+                        }
+                    })()
+                }
             </div>
         )
     }
