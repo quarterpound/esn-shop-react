@@ -6,6 +6,7 @@ import MetaTags from 'react-meta-tags';
 import ESN from '../assets/AZ_colour.png';
 import { ITEMS, IMAGES, PURCHASES } from '../c';
 import actions from '../actions';
+import Timer from '../components/Timer';
 import "./Cart.css";
 
 class Cart extends React.Component {
@@ -28,14 +29,15 @@ class Cart extends React.Component {
 
     submitOrder = async (e) => {
         e.preventDefault();
-        if(!validator(this.state, this.constraints) && this.props.cart.length !== 0){
-            this.setState({submitLoading: true});
+        const check = validator(this.state, this.constraints)
+        if(!check && this.props.cart.length !== 0){
+            this.setState({submitLoading: true, errors: null});
             try {
                 await axios.post(`${PURCHASES}`, {
-                    first: this.state.first,
-                    last: this.state.last,
+                    first: this.state.firstName,
+                    last: this.state.lastName,
                     email: this.state.email,
-                    phoneNumber: this.state.phone,
+                    phoneNumber: this.state.phoneNumber,
                     items: this.props.cart.map(t => {
                         return {
                             id: t.id,
@@ -51,35 +53,45 @@ class Cart extends React.Component {
             } catch(e) {
                 console.log(e);
             }
-        };
+        } else {
+            this.placeErrors(check);
+        }
+    }
+
+    placeErrors = (errors) => {
+        const merged = [].concat.apply([], Object.values(errors));
+        this.setState({errors: merged})
     }
 
     constraints = {
-        first: {
+        firstName: {
             presence: true,
             type: "string",
             length: {
                 minimum: 1,
                 maximum: 30,
+                message: "too long"
             }
         },
-        last: {
+        lastName: {
             presence: true,
             type: "string",
             length: {
                 minimum: 1,
                 maximum: 30,
+                message: "too long"
             }
         },
         email: {
             presence: true,
             email: true,
         },
-        phone: {
+        phoneNumber: {
             presence: true,
             length: {
                 minimum: 9,
                 maximum: 10,
+                message: "must be a valid Azerbaijani phone number"
             }
         }
     }
@@ -118,14 +130,11 @@ class Cart extends React.Component {
 
     render() {
         if(this.state.cart && this.state.cart.length === 0) {
-            setTimeout(() => {
-                window.location.href = "/";
-            }, 2000)
             return (
                 <div>
-                    <h2 className="pageTitle">Cart</h2>
+                    {/* <h2 className="pageTitle">Cart</h2> */}
                     <h2 style={{textAlign: "center"}}>Your cart seems to be empty</h2>
-                    <p style={{textAlign: "center"}}>Redirecting to homepage</p>
+                    <p style={{textAlign: "center"}}>Go back to <a style={{color: "var(--color-orange)", textDecoration: 'none'}} href="/">homepage</a></p>
                 </div>
             )
         }
@@ -185,21 +194,40 @@ class Cart extends React.Component {
                                                 <h3 className="checkOutTitle">Check out</h3>
                                                 <form>
                                                     <div className="formRow" style={{gridTemplateColumns: "1fr 1fr"}}>
-                                                        <input disabled={this.state.submitLoading} onChange={((e) => {e.persist(); this.setState({first: e.currentTarget.value})})} type="text" placeholder="First Name" className="formInput" />
-                                                        <input disabled={this.state.submitLoading} onChange={((e) => {e.persist(); this.setState({last: e.currentTarget.value})})} type="text" placeholder="Last Name" className="formInput" />
+                                                        <input disabled={this.state.submitLoading} onChange={((e) => {e.persist(); this.setState({firstName: e.currentTarget.value})})} type="text" placeholder="First Name" className="formInput" />
+                                                        <input disabled={this.state.submitLoading} onChange={((e) => {e.persist(); this.setState({lastName: e.currentTarget.value})})} type="text" placeholder="Last Name" className="formInput" />
                                                     </div>
                                                     <div className="formRow" style={{gridTemplateColumns: "1fr"}}>
                                                         <input disabled={this.state.submitLoading} onChange={((e) => {e.persist(); this.setState({email: e.currentTarget.value})})} type="email" placeholder="Email" className="formInput" />
                                                     </div>
                                                     <div className="formRow" style={{gridTemplateColumns: "1fr"}}>
-                                                        <input disabled={this.state.submitLoading} onChange={((e) => {e.persist(); this.setState({phone: e.currentTarget.value})})} type="text" placeholder="Phone Number (551230000)" className="formInput" />
+                                                        <input disabled={this.state.submitLoading} onChange={((e) => {e.persist(); this.setState({phoneNumber: e.currentTarget.value})})} type="text" placeholder="Phone Number (551230000)" className="formInput" />
                                                     </div>
-                                                    <div className="finePrint">
-                                                        <p>By placing this order you agree to </p>
-                                                    </div>
+                                                    <div>
+                                                        {
+                                                            (() => {
+                                                                if(this.state.errors) {
+                                                                    return(
+                                                                        <ul className="errorsUl">
+                                                                            {
+                                                                                (() => {
+                                                                                    return this.state.errors.map(t => {
+                                                                                        return <li className="formError">{t}</li>
+                                                                                    })
+                                                                                })()
+                                                                            }
+                                                                        </ul>
+                                                                    )
+                                                                }
+                                                            })()
+                                                        }    
+                                                    </div>   
                                                     <div className="formRow">
                                                         <button disabled={this.state.submitLoading} onClick={this.submitOrder} className="formInput">Place Order</button>
-                                                    </div>                                
+                                                    </div>     
+                                                    <div className="finePrint">
+                                                        <p>By placing this order you agree to </p>
+                                                    </div>                   
                                                 </form>
                                             </div>
                                         )
@@ -210,7 +238,7 @@ class Cart extends React.Component {
                                             <h2 style={{textAlign: 'center'}}>Success</h2>
                                             <h3 style={{textAlign: 'center'}}>We will message you soon!</h3>
                                             <div className="finePrint">
-                                                <p style={{textAlign: 'center'}}>You are being redirected to the home page, thanks for shopping with us, you will recieve an email shortly!</p>
+                                                <p style={{textAlign: 'center'}}>You will be redirected to the home page in <Timer seconds={10} />, thanks for shopping with us, you will recieve an email shortly!</p>
                                             </div>
                                         </div>
                                     )

@@ -7,6 +7,7 @@ import Home from './pages/Home';
 import ItemPage from './pages/Item';
 import Category from './pages/Category';
 import Cart from './pages/Cart';
+import Faq from './pages/Faq';
 import Footer from './components/Footer';
 
 class App extends React.Component {
@@ -26,6 +27,9 @@ class App extends React.Component {
 								</Route>
 								<Route exact path="/cart">
 									<Cart />
+								</Route>
+								<Route exact path="/faq">
+									<Faq />
 								</Route>
 								<Route path="/category/:cat">
 									<Category />
