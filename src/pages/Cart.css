@@ -115,10 +115,15 @@ button.formInput {
 }
 
 @media only screen and (max-width: 900px) { 
-
+    .itemPreview {
+        grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+        justify-items: center;
+    }
 }
 
 
 @media only screen and (max-width: 450px) { 
-
+    .formRow {
+        grid-template-columns: 1fr !important;
+    }
 }

@@ -144,6 +144,7 @@ class Cart extends React.Component {
                     <h3>Order number is: {this.state.purchaseId}</h3>
                     <p>You will recieve an email confirmation shortly at <span style={{color: `var(--color-orange)`}}>{this.state.email}</span></p>
                     <p>We will contact you shortly at <span style={{color: `var(--color-orange)`}}>{this.state.phoneNumber}</span> with more information on how to recieve your purchase</p>
+                    <p>In the meanwhile, if you have any questions about the order procedure, you can check out our <a href="/faq" style={{color: `var(--color-orange)`}}>FAQ Section</a></p>
                     <h4><a style={{color: `var(--color-orange)`, textDecoration: 'none'}} href="/" >Print Receipt</a> </h4>
                 </div>
             )
@@ -179,7 +180,7 @@ class Cart extends React.Component {
                                         return (
                                             <div key={key} className="itemPreview">
                                                 <img className="itemImage" alt={itm.title} src={`${IMAGES}/${itm.image}`} />
-                                                <p className="itemText">{itm.title}</p>
+                                                <p className="itemText"><a style={{color: `var(--color-orange)`, textDecoration: 'none'}} href={`/product/${itm.id}`} >{itm.title}</a></p>
                                                 <p>{itm.qty}</p>
                                                 <p style={{fontWeight: 'bold'}} >₼ {itm.price.toFixed(2)}</p>
                                                 <button style={{justifySelf: 'right'}} className="closeButton" index={itm.id} onClick={this.removeFromCart}> <I width={"15px"} src={close} /> </button>

@@ -25,6 +25,7 @@ class Item extends React.Component {
     async componentDidMount() {
         this.getItem();
         this.generateQrCode();
+        this.setState({itmQty: this.isThisItemInCart() || 1})
     }
 
     getItem = async () => {
@@ -47,12 +48,13 @@ class Item extends React.Component {
     }
 
     isThisItemInCart = () => {
-        return this.props.cart.filter(c => {
+        const check = this.props.cart.filter(c => {
             if(c.id === this.props.item) {
                 return c;
             } 
             return null;
-        }).length === 1
+        });
+        return check.length === 1 ? check[0].qty : null
     }
 
     addToCart = () => {
@@ -70,6 +72,9 @@ class Item extends React.Component {
 
     handleQtyChange(e) {
         e.preventDefault();
+        if(this.isThisItemInCart()) {
+            this.props.removeItem(this.props.item);
+        }
         switch (e.currentTarget.getAttribute("data-qty-action")) {
             case "minus":
                 if(this.state.itmQty > 1)

@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import { CATEGORIES } from '../c';
 import actions from '../actions';
 import Icon from './Icon';
+import menu from '../assets/open-menu.svg';
 import cart from "../assets/supermarket.svg";
 import esn from "../assets/AZ_colour.png";
 import './NavBar.css';
@@ -46,7 +47,7 @@ class NavBar extends React.Component {
                         </ul>
                         <ul className="navBarLinksMobile">
                             <li><Link to="/cart">{ this.props.cart.length === 0 ? <Icon alt="Shopping Cart" src={cart} width="20px"/> : this.props.cart.length}</Link></li>
-                            <li>X</li>
+                            <li> <Icon src={menu} /> </li>
                         </ul>    
                     </div>
                 </div>
