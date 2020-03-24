@@ -3,10 +3,11 @@ import axios from 'axios';
 import validator from 'validate.js';
 import { connect } from 'react-redux';
 import MetaTags from 'react-meta-tags';
+import I from '../components/Icon';
+import close from '../assets/close.svg';
 import ESN from '../assets/AZ_colour.png';
 import { ITEMS, IMAGES, PURCHASES } from '../c';
 import actions from '../actions';
-import Timer from '../components/Timer';
 import "./Cart.css";
 
 class Cart extends React.Component {
@@ -33,7 +34,7 @@ class Cart extends React.Component {
         if(!check && this.props.cart.length !== 0){
             this.setState({submitLoading: true, errors: null});
             try {
-                await axios.post(`${PURCHASES}`, {
+                const t = await axios.post(`${PURCHASES}`, {
                     first: this.state.firstName,
                     last: this.state.lastName,
                     email: this.state.email,
@@ -45,10 +46,7 @@ class Cart extends React.Component {
                         }
                     })
                 })
-                this.setState({submitLoading: false, success: true});
-                setTimeout(() => {
-                    window.location.href = "/";
-                }, 3000);
+                this.setState({submitLoading: false, success: true, purchaseId: t.data});
                 this.props.clear();
             } catch(e) {
                 console.log(e);
@@ -134,7 +132,18 @@ class Cart extends React.Component {
                 <div>
                     {/* <h2 className="pageTitle">Cart</h2> */}
                     <h2 style={{textAlign: "center"}}>Your cart seems to be empty</h2>
-                    <p style={{textAlign: "center"}}>Go back to <a style={{color: "var(--color-orange)", textDecoration: 'none'}} href="/">homepage</a></p>
+                    <p style={{textAlign: "center"}}>Go back to the <a style={{color: "var(--color-orange)", textDecoration: 'none'}} href="/">homepage</a></p>
+                </div>
+            )
+        }
+
+        if(this.state.success) {
+            return (
+                <div>
+                    <h2>Order was placed!</h2>
+                    <h3>Order number is: {this.state.purchaseId}</h3>
+                    <p>You will recieve an email confirmation shortly at <span style={{color: `var(--color-orange)`}}>{this.state.email}</span></p>
+                    <h4><a style={{color: `var(--color-orange)`, textDecoration: 'none'}} href="/" >Print Receipt</a> </h4>
                 </div>
             )
         }
@@ -171,7 +180,7 @@ class Cart extends React.Component {
                                                 <p className="itemText">{itm.title}</p>
                                                 <p>{itm.qty}</p>
                                                 <p style={{fontWeight: 'bold'}} >₼ {itm.price.toFixed(2)}</p>
-                                                <button style={{justifySelf: 'right'}} index={itm.id} onClick={this.removeFromCart} >X</button>
+                                                <button style={{justifySelf: 'right'}} className="closeButton" index={itm.id} onClick={this.removeFromCart}> <I width={"15px"} src={close} /> </button>
                                             </div>
                                         )
                                     })
@@ -186,64 +195,46 @@ class Cart extends React.Component {
                     </div>
                     <div className="checkOut">
                         <div className="checkOutInner" style={ this.state.success ? {height: "100%", border: 'none'} : {} }>
-                            {
-                                (() => {
-                                    if(!this.state.success) {
-                                        return (
-                                            <div>
-                                                <h3 className="checkOutTitle">Check out</h3>
-                                                <form>
-                                                    <div className="formRow" style={{gridTemplateColumns: "1fr 1fr"}}>
-                                                        <input disabled={this.state.submitLoading} onChange={((e) => {e.persist(); this.setState({firstName: e.currentTarget.value})})} type="text" placeholder="First Name" className="formInput" />
-                                                        <input disabled={this.state.submitLoading} onChange={((e) => {e.persist(); this.setState({lastName: e.currentTarget.value})})} type="text" placeholder="Last Name" className="formInput" />
-                                                    </div>
-                                                    <div className="formRow" style={{gridTemplateColumns: "1fr"}}>
-                                                        <input disabled={this.state.submitLoading} onChange={((e) => {e.persist(); this.setState({email: e.currentTarget.value})})} type="email" placeholder="Email" className="formInput" />
-                                                    </div>
-                                                    <div className="formRow" style={{gridTemplateColumns: "1fr"}}>
-                                                        <input disabled={this.state.submitLoading} onChange={((e) => {e.persist(); this.setState({phoneNumber: e.currentTarget.value})})} type="text" placeholder="Phone Number (551230000)" className="formInput" />
-                                                    </div>
-                                                    <div>
+                        <div>
+                            <h3 className="checkOutTitle">Check out</h3>
+                            <form>
+                                <div className="formRow" style={{gridTemplateColumns: "1fr 1fr"}}>
+                                    <input disabled={this.state.submitLoading} onChange={((e) => {e.persist(); this.setState({firstName: e.currentTarget.value})})} type="text" placeholder="First Name" className="formInput" />
+                                    <input disabled={this.state.submitLoading} onChange={((e) => {e.persist(); this.setState({lastName: e.currentTarget.value})})} type="text" placeholder="Last Name" className="formInput" />
+                                </div>
+                                <div className="formRow" style={{gridTemplateColumns: "1fr"}}>
+                                    <input disabled={this.state.submitLoading} onChange={((e) => {e.persist(); this.setState({email: e.currentTarget.value})})} type="email" placeholder="Email" className="formInput" />
+                                </div>
+                                <div className="formRow" style={{gridTemplateColumns: "1fr"}}>
+                                    <input disabled={this.state.submitLoading} onChange={((e) => {e.persist(); this.setState({phoneNumber: e.currentTarget.value})})} type="text" placeholder="Phone Number (551230000)" className="formInput" />
+                                </div>
+                                <div>
+                                    {
+                                        (() => {
+                                            if(this.state.errors) {
+                                                return(
+                                                    <ul className="errorsUl">
                                                         {
                                                             (() => {
-                                                                if(this.state.errors) {
-                                                                    return(
-                                                                        <ul className="errorsUl">
-                                                                            {
-                                                                                (() => {
-                                                                                    return this.state.errors.map(t => {
-                                                                                        return <li className="formError">{t}</li>
-                                                                                    })
-                                                                                })()
-                                                                            }
-                                                                        </ul>
-                                                                    )
-                                                                }
+                                                                return this.state.errors.map(t => {
+                                                                    return <li className="formError">{t}</li>
+                                                                })
                                                             })()
-                                                        }    
-                                                    </div>   
-                                                    <div className="formRow">
-                                                        <button disabled={this.state.submitLoading} onClick={this.submitOrder} className="formInput">Place Order</button>
-                                                    </div>     
-                                                    <div className="finePrint">
-                                                        <p>By placing this order you agree to </p>
-                                                    </div>                   
-                                                </form>
-                                            </div>
-                                        )
-                                    }
-
-                                    return (
-                                        <div>
-                                            <h2 style={{textAlign: 'center'}}>Success</h2>
-                                            <h3 style={{textAlign: 'center'}}>We will message you soon!</h3>
-                                            <div className="finePrint">
-                                                <p style={{textAlign: 'center'}}>You will be redirected to the home page in <Timer seconds={10} />, thanks for shopping with us, you will recieve an email shortly!</p>
-                                            </div>
-                                        </div>
-                                    )
-                                })()
-                            }
+                                                        }
+                                                    </ul>
+                                                )
+                                            }
+                                        })()
+                                    }    
+                                </div>   
+                                <div className="formRow">
+                                    <button disabled={this.state.submitLoading} onClick={this.submitOrder} className="formInput">Place Order</button>
+                                </div>     
+                                <div className="finePrint">
+                                    <p>By placing this order you agree to </p>
+                                </div>                   
+                            </form>
+                        </div>
                         </div>
                     </div>
                 </div>
