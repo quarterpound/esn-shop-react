@@ -143,6 +143,7 @@ class Cart extends React.Component {
                     <h2>Order was placed!</h2>
                     <h3>Order number is: {this.state.purchaseId}</h3>
                     <p>You will recieve an email confirmation shortly at <span style={{color: `var(--color-orange)`}}>{this.state.email}</span></p>
+                    <p>We will contact you shortly at <span style={{color: `var(--color-orange)`}}>{this.state.phoneNumber}</span> with more information on how to recieve your purchase</p>
                     <h4><a style={{color: `var(--color-orange)`, textDecoration: 'none'}} href="/" >Print Receipt</a> </h4>
                 </div>
             )
@@ -150,6 +151,7 @@ class Cart extends React.Component {
 
         return (
             <div>
+                <h2 className="pageTitle">Cart</h2>
                 <div className="smallGrid">
                     <MetaTags>
                         <title>Cart | ESN Azerbaijan Webshop</title>
@@ -231,7 +233,7 @@ class Cart extends React.Component {
                                     <button disabled={this.state.submitLoading} onClick={this.submitOrder} className="formInput">Place Order</button>
                                 </div>     
                                 <div className="finePrint">
-                                    <p>By placing this order you agree to </p>
+                                    <p>Make sure that the information provided above is correct <span className="formError">you will not be able to change this information</span></p>
                                 </div>                   
                             </form>
                         </div>

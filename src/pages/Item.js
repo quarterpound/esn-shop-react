@@ -119,19 +119,23 @@ class Item extends React.Component {
                         if(this.state.itmTitle) {
                             return (
                                 <div className="itemInner">
-                                <div>
-                                    {
-                                        (() => {
-                                            if(this.state.itmImages) {
-                                                return <Slider images={this.state.itmImages} />
-                                            }
-                                        })()
-                                    }
-                                </div>
-                                <div className="itemDetails">
+                                    <div className="titleMobile">
+                                        <p className="itemCategory">{this.state.itmCtg}</p>
+                                        <h1 className="itemName">{this.state.itmTitle}</h1>
+                                    </div>           
+                                    <div>
+                                        {
+                                            (() => {
+                                                if(this.state.itmImages) {
+                                                    return <Slider images={this.state.itmImages} />
+                                                }
+                                            })()
+                                        }
+                                    </div>
+                                    <div className="itemDetails">
                                     <div>
                                         <div className="qrCode">
-                                            <div>
+                                            <div className="titleItem">
                                                 <p className="itemCategory">{this.state.itmCtg}</p>
                                                 <h1 className="itemName">{this.state.itmTitle}</h1>
                                             </div>
@@ -189,7 +193,7 @@ class Item extends React.Component {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                                </div>
                             )
                         } 
                         else if(!this.state.hasFound && typeof this.state.hasFound !== 'undefined') {

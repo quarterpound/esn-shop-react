@@ -84,6 +84,10 @@
     border: none;
 }
 
+.itemImage {
+    border-radius: 3px;
+}
+
 .closeButton:hover {
     cursor: pointer;
 }
@@ -92,4 +96,29 @@ button.formInput {
     background: var(--color-orange);
     color: white;
     border: none;
+}
+
+
+@media only screen and (max-width: 1024px) { 
+    .smallGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .itemPreview {
+        grid-gap: 3px;
+    }
+
+    .itemsHolder {
+        padding-right: unset;
+        height: auto;
+    }
+}
+
+@media only screen and (max-width: 900px) { 
+
+}
+
+
+@media only screen and (max-width: 450px) { 
+
 }

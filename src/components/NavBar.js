@@ -43,7 +43,11 @@ class NavBar extends React.Component {
                             }
                             <li><Link to="/faq">FAQ</Link></li>
                             <li><Link to="/cart">{ this.props.cart.length === 0 ? <Icon alt="Shopping Cart" src={cart} width="20px"/> : this.props.cart.length}</Link></li>
-                        </ul>  
+                        </ul>
+                        <ul className="navBarLinksMobile">
+                            <li><Link to="/cart">{ this.props.cart.length === 0 ? <Icon alt="Shopping Cart" src={cart} width="20px"/> : this.props.cart.length}</Link></li>
+                            <li>X</li>
+                        </ul>    
                     </div>
                 </div>
             </div>

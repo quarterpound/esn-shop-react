@@ -39,7 +39,7 @@ class Slider extends React.Component {
     render = () => {
         return (
             <div className="sliderContainer">
-                <div className="itemImage" style={{backgroundImage: `url(${IMAGES}/${this.props.images[this.state.currentSlide]})`}} />
+                <div className="itemSliderImage" style={{backgroundImage: `url(${IMAGES}/${this.props.images[this.state.currentSlide]})`}} />
                 <div className="sliderButtons">
                     <button className={(this.state.currentSlide - 1 < 0) ? "disabled-slide arrows" : "arrows"} data-slide-action="back" onClick={this.handleSlide}><Icon src={arrow} rotation={180} /></button>
                     <button className={(this.state.currentSlide + 1 >= this.props.images.length) ? "disabled-slide arrows" : "arrows"} data-slide-action="forward" onClick={this.handleSlide}><Icon src={arrow} /></button>
