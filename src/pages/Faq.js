@@ -24,17 +24,38 @@ class Faq extends React.Component {
                     <meta property="twitter:description" content="Want exclusive, cool ESN products and feel the wave of esners? Then you are in the right place. Where discounted prices and coolest products meet." />
                     <meta property="twitter:image" content={ESN} />
                 </MetaTags>
+                <h2 className="pageTitle">FAQ</h2>
                 <div className="qAndAFaq">
-                    <p className="faqQuestion"><span className="questionInner">Question 1</span></p>
-                    <p className="faqAnswer"><span className="answerInner">Pariatur mollit proident exercitation laborum duis eiusmod laboris officia id labore. Do eiusmod aliquip in laboris. Fugiat tempor labore non id elit laborum laborum occaecat. Reprehenderit elit ut fugiat mollit velit voluptate reprehenderit officia deserunt officia est excepteur cillum. Aliquip labore consequat irure ex mollit ad esse pariatur qui excepteur eiusmod ea ipsum sint. Minim esse sit Lorem enim eu tempor ad commodo ut deserunt. Eiusmod elit commodo tempor labore ex ullamco ullamco deserunt fugiat voluptate reprehenderit pariatur deserunt.</span></p>
+                    <p className="faqQuestion"><span className="questionInner">How can I make a payment?</span></p>
+                    <p className="faqAnswer">
+                        <span className="answerInner">
+                            <span>Currently, the payments can only be made through electronic payment systems, such as MilliÖn. The details of the bank account will be given in the mail, which is sent after filling up the form/</span>
+                            <p>If you are wondering about how to proceed with payments on MilliÖn, check the following instructions:</p>
+                            <ol>
+                                <li>Select the “Banking Services” section on the terminal screen and choose the name of the bank. </li>
+                                <li>On the following screen, select “Bank Transfer”.</li>
+                                <li>Finally, enter the details of the bank account sent to you via email and finish the payment process. And Voilà!</li>
+                            </ol>
+                        </span>
+                    </p>
                 </div>
                 <div className="qAndAFaq">
-                    <p className="faqQuestion"><span className="questionInner">Question 2</span></p>
-                    <p className="faqAnswer"><span className="answerInner">Pariatur mollit proident exercitation laborum duis eiusmod laboris officia id labore. Do eiusmod aliquip in laboris. Fugiat tempor labore non id elit laborum laborum occaecat. Reprehenderit elit ut fugiat mollit velit voluptate reprehenderit officia deserunt officia est excepteur cillum. Aliquip labore consequat irure ex mollit ad esse pariatur qui excepteur eiusmod ea ipsum sint. Minim esse sit Lorem enim eu tempor ad commodo ut deserunt. Eiusmod elit commodo tempor labore ex ullamco ullamco deserunt fugiat voluptate reprehenderit pariatur deserunt.</span></p>
+                    <p className="faqQuestion"><span className="questionInner">Can I get a discount?</span></p>
+                    <p className="faqAnswer"><span className="answerInner">ESN cardholders can get discount.</span></p>
                 </div>
                 <div className="qAndAFaq">
-                    <p className="faqQuestion"><span className="questionInner">Question 3</span></p>
-                    <p className="faqAnswer"><span className="answerInner">Pariatur mollit proident exercitation laborum duis eiusmod laboris officia id labore. Do eiusmod aliquip in laboris. Fugiat tempor labore non id elit laborum laborum occaecat. Reprehenderit elit ut fugiat mollit velit voluptate reprehenderit officia deserunt officia est excepteur cillum. Aliquip labore consequat irure ex mollit ad esse pariatur qui excepteur eiusmod ea ipsum sint. Minim esse sit Lorem enim eu tempor ad commodo ut deserunt. Eiusmod elit commodo tempor labore ex ullamco ullamco deserunt fugiat voluptate reprehenderit pariatur deserunt.</span></p>
+                    <p className="faqQuestion"><span className="questionInner">When will I get my order?</span></p>
+                    <p className="faqAnswer"><span className="answerInner">It will take at least a week for the product to be delivered.</span></p>
+                </div>
+                <div className="qAndAFaq">
+                    <p className="faqQuestion"><span className="questionInner">Where can I get my order from??</span></p>
+                    <p className="faqAnswer">
+                        <span className="answerInner">You have two options on how to recieve your order:</span>
+                        <ol>
+                            <li>Take from our office.</li>
+                            <li>Get a delivery to Metro stations (28 May or Ganjlik).</li>
+                        </ol>    
+                    </p>
                 </div>
             </div>
         )
