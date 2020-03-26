@@ -7,7 +7,7 @@
 .pageContainer {
     /* height: 100vh; */
     width: var(--page-width);
-    margin: 60px auto
+    margin: 30px auto
 }
 /* 
 @media (max-width: 575.98px) { 

@@ -125,5 +125,6 @@ button.formInput {
 @media only screen and (max-width: 450px) { 
     .formRow {
         grid-template-columns: 1fr !important;
+        padding: 5px 0;
     }
 }
