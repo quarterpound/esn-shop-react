@@ -187,7 +187,7 @@ class Item extends React.Component {
                                     <div className="pricing" style={{alignSelf: "end"}}>
                                         <div>
                                             <span className="total-price-tab">TOTAL PRICE</span>
-                                            <p className="total-price">{ this.state.itmPrice ? `₼${(this.state.itmPrice * this.state.itmQty).toFixed(2)}` : "Loading..."}</p>
+                                            <p className="total-price">{ this.state.itmPrice ? `₼ ${(this.state.itmPrice * this.state.itmQty).toFixed(2)}` : "Loading..."}</p>
                                         </div>
                                         <div>
                                             {
