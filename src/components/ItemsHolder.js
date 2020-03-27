@@ -8,10 +8,6 @@ class ItemsHolder extends React.Component {
                 return <ItemCard key={key} item={it}/>
             })
         }
-
-        return (
-            <div></div>
-        )
     }
 }
 

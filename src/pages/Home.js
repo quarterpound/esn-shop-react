@@ -46,6 +46,10 @@ class Home extends React.Component {
                         (() => {
                             if(this.state.items){
                                 return <ItemsHolder items={this.state.items} />
+                            } else {
+                                return (
+                                    <h2 style={{textAlign: 'center'}}>Loading...</h2>
+                                )
                             }                                
                         })()
                     }

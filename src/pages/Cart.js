@@ -186,6 +186,8 @@ class Cart extends React.Component {
                                             </div>
                                         )
                                     })
+                                } else {
+                                    return <h2 style={{textAlign: 'center'}}>Loading...</h2>
                                 }
                             })()
                         }
