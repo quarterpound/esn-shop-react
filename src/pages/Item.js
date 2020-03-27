@@ -151,7 +151,7 @@ class Item extends React.Component {
                                         <div className="itemPriceAndQty">
                                             <div>
                                                 <p className="tabTitle">PRICE</p>
-                                                <p className="itemPrice">{ this.state.itmPrice ? `₼${(this.state.itmPrice).toFixed(2)}` : "Loading..."}</p>
+                                                <p className="itemPrice">{ this.state.itmPrice ? `₼ ${(this.state.itmPrice).toFixed(2)}` : "Loading..."}</p>
                                             </div>
                                             <div>
                                                 <p className="tabTitle">QUANTITY</p>

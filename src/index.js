@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import Https from 'react-https-redirect';
 import { createStore } from 'redux';
 import { Provider } from 'react-redux';
 import Store from './store';
@@ -13,9 +14,11 @@ const store = createStore(
 );
 
 ReactDOM.render(
+<Https>
     <Provider store={store}>
         <App />
-    </Provider>,    
+    </Provider>    
+</Https>,
     document.getElementById('root')
 );
 
